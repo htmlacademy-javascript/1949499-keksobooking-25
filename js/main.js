@@ -4,7 +4,7 @@ function getRand(min, max, fix){
   }
   const randResult = Math.random() * (max - min) + min;
   if(fix){
-      return Number(randResult.toFixed(fix));
+    return Number(randResult.toFixed(fix));
   }
   return Math.round(randResult);
 }
