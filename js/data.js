@@ -51,16 +51,18 @@ const DESCRIPTIONS = [
 const PHOTOS = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
-  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg.',
+  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
 ];
 
 function createOffer() {
+  const MAX_PRICE = 100000;
+  const MAX_ROOMS = 10;
   return {
     title: getRandElement(TITLES),
     address: '',
-    price: getRand(0, 100000),
+    price: getRand(0, MAX_PRICE),
     type: getRandElement(TYPES),
-    rooms: getRand(0, 10),
+    rooms: getRand(0, MAX_ROOMS),
     guests: '',
     checkin: getRandElement(TIMES),
     checkout: getRandElement(TIMES),
@@ -71,9 +73,14 @@ function createOffer() {
 }
 
 function createLocation() {
+  const MIN_LAT = 35.65000;
+  const MAX_LAT = 35.70000;
+  const MIN_LNG = 139.70000;
+  const MAX_LNG = 139.80000;
+  const FIX = 5;
   return {
-    lat: getRand(35.65000, 35.70000, 5),
-    lng: getRand(139.70000, 139.80000, 5),
+    lat: getRand(MIN_LAT, MAX_LAT, FIX),
+    lng: getRand(MIN_LNG, MAX_LNG, FIX),
   };
 }
 
@@ -97,14 +104,14 @@ function addMissingValues(objects) {
     objects[i].offer.address += `${String(objects[i].location.lat)  }, ${  String(objects[i].location.lng)}`;
     objects[i].offer.guests = objects[i].offer.rooms;
   }
+  return objects;
 }
 
-function getRentOffers() {
+function getRentOffers(count) {
   const offers = Array.from({
-    length: 10
+    length: count
   }, createAnnouncement);
-  addMissingValues(offers);
-  return offers;
+  return addMissingValues(offers);
 }
 
 export {

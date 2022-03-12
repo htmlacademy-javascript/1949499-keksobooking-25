@@ -1,5 +1,1 @@
-import {
-  getRentOffers
-} from './data.js';
-
-getRentOffers();
+import './markup-generator.js';
