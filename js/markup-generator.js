@@ -18,6 +18,8 @@ function getType(type) {
       return 'Дворец';
     case 'hotel':
       return 'Отель';
+    default:
+      return 'Неизвестно';
   }
 }
 
