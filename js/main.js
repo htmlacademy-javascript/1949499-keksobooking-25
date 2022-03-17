@@ -4,5 +4,7 @@ import {
   activePage
 } from './form-controller.js';
 
+import './form-validator.js';
+
 unActivePage();
 activePage();
