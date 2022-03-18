@@ -1,14 +1,18 @@
 import '../../pristine/pristine.min.js';
+
 import {
   validateGuests
 } from './guest-validator.js';
+
 import {
   validateMinPrice,
   validateMaxPrice
 } from './price-validator.js';
+
 import {
   validateTitle
 } from './title-validator.js';
+
 import './time-changer.js';
 
 const adForm = document.querySelector('.ad-form');

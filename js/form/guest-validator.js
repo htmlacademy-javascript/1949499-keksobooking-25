@@ -14,18 +14,21 @@ const pristine = new Pristine(adForm, {
 });
 
 function getMaxGuests(value) {
-  if (value > 3) {
-    return 0;
+  const NOT_FOR_GUESTS = 0;
+  const MAX_COUNT_GUESTS = 3;
+  if (value > MAX_COUNT_GUESTS) {
+    return NOT_FOR_GUESTS;
   }
   return value;
 }
 
 function validateGuests(value) {
   const max = getMaxGuests(roomsCount.value);
-  if (max === 0 || Number(value) === 0) {
+  const NOT_FOR_GUESTS = 0;
+  if (max === NOT_FOR_GUESTS || Number(value) === NOT_FOR_GUESTS) {
     return max === Number(value);
   }
-  return max >= value && value !== 0;
+  return max >= value && value !== NOT_FOR_GUESTS;
 }
 
 pristine.addValidator(
