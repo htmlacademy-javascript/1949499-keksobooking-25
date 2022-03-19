@@ -1,0 +1,33 @@
+import '../../pristine/pristine.min.js';
+
+const adForm = document.querySelector('.ad-form');
+const title = adForm.querySelector('#title');
+
+const pristine = new Pristine(adForm, {
+  classTo: 'ad-form__element',
+  errorClass: 'ad-form__element--invalid',
+  successClass: 'ad-form__element--valid',
+  errorTextParent: 'ad-form__element',
+  errorTextTag: 'span',
+  errorTextClass: 'ad-form__error',
+});
+
+function validateTitle(value) {
+  const MIN_LENGTH = 30;
+  const MAX_LENGTH = 100;
+  return value.length >= MIN_LENGTH && value.length <= MAX_LENGTH;
+}
+
+pristine.addValidator(
+  title,
+  validateTitle,
+  'От 30 до 100 символов'
+);
+
+title.addEventListener('change', () => {
+  pristine.validate();
+});
+
+export {
+  validateTitle
+};
