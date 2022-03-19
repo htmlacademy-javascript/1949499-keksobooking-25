@@ -1,3 +1,5 @@
+import './form-validator.js';
+
 function unActiveBlock(form){
   const selector = `.${form}`;
   const parent = document.querySelector(selector);
