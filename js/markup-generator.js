@@ -1,11 +1,3 @@
-import {
-  getRentOffers
-} from './data.js';
-
-const mapCanvas = document.querySelector('#map-canvas');
-const cardTemplate = document.querySelector('#card');
-const offers = getRentOffers(10);
-
 function getType(type) {
   switch (type) {
     case 'flat':
@@ -19,11 +11,20 @@ function getType(type) {
     case 'hotel':
       return 'Отель';
     default:
-      return 'Неизвестно';
+      return '';
   }
 }
 
-function getPhotos(photos, card){
+function checkData() {
+  for (let i = 0; i < arguments.length; i++) {
+    if (arguments[i] === undefined) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function getPhotos(photos, card) {
   const resultFragment = document.createDocumentFragment();
   photos.forEach((photo) => {
     const popupPhoto = card.querySelector('.popup__photo').cloneNode(true);
@@ -33,35 +34,66 @@ function getPhotos(photos, card){
   return resultFragment;
 }
 
-function getFeatures(features, card){
+function getFeatures(features, card) {
   const featureContainer = card.querySelector('.popup__features');
   const featureList = featureContainer.querySelectorAll('.popup__feature');
-  const modifiers = features.map((feature) => `popup__feature--${feature}`);
+  if (checkData(features)) {
+    const modifiers = features.map((feature) => `popup__feature--${feature}`);
 
-  featureList.forEach((featureListItem) => {
-    const modifier = featureListItem.classList[1];
+    featureList.forEach((featureListItem) => {
+      const modifier = featureListItem.classList[1];
 
-    if(!modifiers.includes(modifier)){
+      if (!modifiers.includes(modifier)) {
+        featureListItem.remove();
+      }
+    });
+  } else {
+    featureList.forEach((featureListItem) => {
       featureListItem.remove();
-    }
-  });
+    });
+  }
 }
+
 
 function setOffer(data, template) {
   const card = template.content.cloneNode(true);
   card.querySelector('.popup__title').textContent = data.title;
-  card.querySelector('.popup__text--address').textContent = data.address;
-  card.querySelector('.popup__text--price').content = `${data.price }<span>₽/ночь</span>`;
+  if (checkData(data.address)) {
+    card.querySelector('.popup__text--address').textContent = data.address;
+  } else {
+    card.querySelector('.popup__text--address').textContent = '';
+  }
+
+  if (checkData(data.price)) {
+    card.querySelector('.popup__text--price').innerHTML = `${data.price}<span> ₽/ночь</span>`;
+  } else {
+    card.querySelector('.popup__text--price').innerHTML = '';
+  }
+
   card.querySelector('.popup__type').textContent = getType(data.type);
-  card.querySelector('.popup__text--capacity').textContent = `${data.rooms } комнаты для ${ data.guests } гостей`;
-  card.querySelector('.popup__text--time').textContent = `Заезд после ${ data.checkin }, выезд до ${ data.checkout}`;
+
+  if (checkData(data.rooms, data.guests)) {
+    card.querySelector('.popup__text--capacity').textContent = `${data.rooms } комнаты для ${ data.guests } гостей`;
+  } else {
+    card.querySelector('.popup__text--capacity').textContent = '';
+  }
+
+  if (checkData(data.checkin, data.checkout)) {
+    card.querySelector('.popup__text--time').textContent = `Заезд после ${ data.checkin }, выезд до ${ data.checkout}`;
+  } else {
+    card.querySelector('.popup__text--time').textContent = '';
+  }
   getFeatures(data.features, card);
   card.querySelector('.popup__description').textContent = data.description;
-  card.querySelector('.popup__photos').replaceChild(getPhotos(data.photos, card), card.querySelector('.popup__photo'));
+  if (checkData(data.photos)) {
+    card.querySelector('.popup__photos').replaceChild(getPhotos(data.photos, card), card.querySelector('.popup__photo'));
+  } else {
+    card.querySelector('.popup__photos').innerHTML = '';
+  }
   return card;
 }
 
-function createOffers(data, card){
+function createOffers(data, card) {
   const inputFragments = [];
   data.forEach((element, i) => {
     inputFragments[i] = document.createDocumentFragment();
@@ -71,5 +103,6 @@ function createOffers(data, card){
   return inputFragments;
 }
 
-const adv = createOffers(offers, cardTemplate);
-mapCanvas.appendChild(adv[6]);
+export {
+  createOffers
+};
