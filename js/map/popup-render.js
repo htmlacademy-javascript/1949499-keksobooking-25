@@ -11,7 +11,7 @@ import {
 } from '../markup-generator.js';
 
 const pinIcon = L.icon({
-  iconUrl: '../img/pin.svg',
+  iconUrl: './img/pin.svg',
   iconSize: [40, 40],
   iconAnchor: [20, 40],
 });
