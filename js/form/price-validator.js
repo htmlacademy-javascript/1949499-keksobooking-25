@@ -3,6 +3,7 @@ import '../../pristine/pristine.min.js';
 const adForm = document.querySelector('.ad-form');
 const price = adForm.querySelector('#price');
 const typeAd = adForm.querySelector('#type');
+const MAX_PRICE = 100000;
 
 const pristine = new Pristine(adForm, {
   classTo: 'ad-form__element',
@@ -38,7 +39,6 @@ function getMinPrice(type) {
 }
 
 function validateMaxPrice(value) {
-  const MAX_PRICE = 100000;
   return value <= MAX_PRICE;
 }
 
@@ -49,7 +49,7 @@ function validateMinPrice(value) {
 pristine.addValidator(
   price,
   validateMaxPrice,
-  'Максимальное значение 100 000'
+  `Максимальное значение ${MAX_PRICE}`
 );
 
 pristine.addValidator(
@@ -69,5 +69,6 @@ typeAd.addEventListener('change', () => {
 
 export {
   validateMaxPrice,
-  validateMinPrice
+  validateMinPrice,
+  MAX_PRICE,
 };

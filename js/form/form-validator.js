@@ -6,11 +6,14 @@ import {
 
 import {
   validateMinPrice,
-  validateMaxPrice
+  validateMaxPrice,
+  MAX_PRICE,
 } from './price-validator.js';
 
 import {
-  validateTitle
+  validateTitle,
+  MAX_LENGTH,
+  MIN_LENGTH,
 } from './title-validator.js';
 
 import './time-changer.js';
@@ -39,13 +42,13 @@ pristine.addValidator(
 pristine.addValidator(
   title,
   validateTitle,
-  'От 30 до 100 символов'
+  `От ${MIN_LENGTH} до ${MAX_LENGTH} символов`
 );
 
 pristine.addValidator(
   price,
   validateMaxPrice,
-  'Максимальное значение 100 000'
+  `Максимальное значение ${MAX_PRICE}`
 );
 
 pristine.addValidator(
