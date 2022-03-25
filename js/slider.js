@@ -1,26 +1,15 @@
-import '../../pristine/pristine.min.js';
-
-import {
-  validateGuests
-} from './guest-validator.js';
+import '../pristine/pristine.min.js';
 
 import {
   validateMinPrice,
   validateMaxPrice,
   MAX_PRICE,
-} from './price-validator.js';
+} from './form/price-validator.js';
 
-import {
-  validateTitle,
-  MAX_LENGTH,
-  MIN_LENGTH,
-} from './title-validator.js';
-
-import './time-changer.js';
+const sliderElement = document.querySelector('.ad-form__slider');
+const priceField = document.querySelector('#price');
 
 const adForm = document.querySelector('.ad-form');
-const guestCount = adForm.querySelector('#capacity');
-const title = adForm.querySelector('#title');
 const price = adForm.querySelector('#price');
 
 const pristine = new Pristine(adForm, {
@@ -31,19 +20,6 @@ const pristine = new Pristine(adForm, {
   errorTextTag: 'span',
   errorTextClass: 'ad-form__error',
 });
-
-
-pristine.addValidator(
-  guestCount,
-  validateGuests,
-  'Неверное число гостей'
-);
-
-pristine.addValidator(
-  title,
-  validateTitle,
-  `От ${MIN_LENGTH} до ${MAX_LENGTH} символов`
-);
 
 pristine.addValidator(
   price,
@@ -57,7 +33,21 @@ pristine.addValidator(
   'Слишком низкая стоимость'
 );
 
-adForm.addEventListener('submit', (evt) => {
-  evt.preventDefault();
+noUiSlider.create(sliderElement, {
+  range: {
+    min: 0,
+    max: 100000,
+  },
+  start: 5000,
+  step: 1,
+  connect: 'lower',
+});
+
+sliderElement.noUiSlider.on('update', () => {
+  priceField.value = Number(sliderElement.noUiSlider.get()).toFixed(0);
   pristine.validate();
+});
+
+priceField.addEventListener('change', ()=>{
+  sliderElement.noUiSlider.set(priceField.value);
 });

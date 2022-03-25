@@ -3,6 +3,9 @@ import '../../pristine/pristine.min.js';
 const adForm = document.querySelector('.ad-form');
 const title = adForm.querySelector('#title');
 
+const MIN_LENGTH = 30;
+const MAX_LENGTH = 100;
+
 const pristine = new Pristine(adForm, {
   classTo: 'ad-form__element',
   errorClass: 'ad-form__element--invalid',
@@ -13,15 +16,13 @@ const pristine = new Pristine(adForm, {
 });
 
 function validateTitle(value) {
-  const MIN_LENGTH = 30;
-  const MAX_LENGTH = 100;
   return value.length >= MIN_LENGTH && value.length <= MAX_LENGTH;
 }
 
 pristine.addValidator(
   title,
   validateTitle,
-  'От 30 до 100 символов'
+  `От ${MIN_LENGTH} до ${MAX_LENGTH} символов`
 );
 
 title.addEventListener('change', () => {
@@ -29,5 +30,7 @@ title.addEventListener('change', () => {
 });
 
 export {
-  validateTitle
+  validateTitle,
+  MIN_LENGTH,
+  MAX_LENGTH,
 };

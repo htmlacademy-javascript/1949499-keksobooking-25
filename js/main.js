@@ -1,8 +1,4 @@
 import './markup-generator.js';
-import {
-  unActivePage,
-  activePage
-} from './form/form-controller.js';
-
-unActivePage();
-activePage();
+import './form/form-controller.js';
+import './map/popup-render.js';
+import './slider.js';

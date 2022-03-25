@@ -29,4 +29,6 @@ function activePage(){
   activeBlock('map__filters');
 }
 
-export { unActivePage, activePage};
+unActivePage();
+
+export {activePage};
