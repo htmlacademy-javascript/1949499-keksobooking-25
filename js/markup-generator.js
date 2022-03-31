@@ -93,16 +93,13 @@ function setOffer(data, template) {
   return card;
 }
 
-function createOffers(data, card) {
-  const inputFragments = [];
-  data.forEach((element, i) => {
-    inputFragments[i] = document.createDocumentFragment();
-    inputFragments[i].appendChild(setOffer(data[i].offer, card));
-    inputFragments[i].querySelector('.popup__avatar').src = data[i].author.avatar;
-  });
-  return inputFragments;
+function createOffer(data, card) {
+  const inputFragment = document.createDocumentFragment();
+  inputFragment.appendChild(setOffer(data.offer, card));
+  inputFragment.querySelector('.popup__avatar').src = data.author.avatar;
+  return inputFragment;
 }
 
 export {
-  createOffers
+  createOffer
 };

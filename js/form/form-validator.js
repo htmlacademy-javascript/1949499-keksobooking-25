@@ -16,6 +16,7 @@ import {
   MIN_LENGTH,
 } from './title-validator.js';
 
+
 import './time-changer.js';
 
 const adForm = document.querySelector('.ad-form');
@@ -57,7 +58,5 @@ pristine.addValidator(
   'Слишком низкая стоимость'
 );
 
-adForm.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  pristine.validate();
-});
+
+export {pristine};

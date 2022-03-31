@@ -1053,3 +1053,19 @@ fieldset {
 .hidden {
   display: none;
 }
+
+/**
+ * Сообщение об ошибке загрузки объявлений
+ */
+
+.data-error{
+  width: 270px;
+  padding: 15px;
+  background-color: #ff5635;
+  color: #ffffff;
+  position: fixed;
+  left: 5px;
+  top: 5px;
+  z-index: 1000;
+  border-radius: 8px;
+}
