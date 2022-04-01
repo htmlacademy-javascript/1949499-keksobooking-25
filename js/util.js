@@ -17,4 +17,8 @@ function getRandSequence(array) {
   return array.slice(0, getRand(1, array.length));
 }
 
-export {getRand, getRandElement, getRandSequence};
+function isEscapeKey(evt){
+  return evt.key === 'Escape';
+}
+
+export {getRand, getRandElement, getRandSequence, isEscapeKey};

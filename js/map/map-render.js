@@ -1,5 +1,8 @@
-import {activePage} from '../form/form-controller.js';
+import {activePage, unActivePage} from '../form/form-controller.js';
 
+const centerOfTokyo = L.latLng(35.681729, 139.753927);
+
+unActivePage();
 const map = L.map('map-canvas')
   .on('load', () => {
     activePage();
@@ -22,14 +25,11 @@ const mainPinIcon = L.icon({
 });
 
 const mainPinMarker = L.marker(
-  {
-    lat: 35.681729,
-    lng: 139.753927,
-  },
+  centerOfTokyo,
   {
     draggable: true,
     icon: mainPinIcon,
   }
 ).addTo(map);
 
-export {mainPinMarker, map};
+export {mainPinMarker, map, centerOfTokyo};
