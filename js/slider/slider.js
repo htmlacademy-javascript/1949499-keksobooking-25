@@ -1,10 +1,10 @@
-import '../pristine/pristine.min.js';
+import '../../pristine/pristine.min.js';
 
 import {
   validateMinPrice,
   validateMaxPrice,
   MAX_PRICE,
-} from './form/price-validator.js';
+} from '../form/validator/validators/price-validator.js';
 
 const sliderElement = document.querySelector('.ad-form__slider');
 const priceField = document.querySelector('#price');
@@ -48,6 +48,10 @@ sliderElement.noUiSlider.on('update', () => {
   pristine.validate();
 });
 
-priceField.addEventListener('change', ()=>{
+priceField.addEventListener('change', () => {
   sliderElement.noUiSlider.set(priceField.value);
 });
+
+export {
+  sliderElement
+};

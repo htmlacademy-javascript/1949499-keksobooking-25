@@ -1,23 +1,20 @@
-import '../../pristine/pristine.min.js';
+import '../../../pristine/pristine.min.js';
 
 import {
   validateGuests
-} from './guest-validator.js';
+} from './validators/guest-validator.js';
 
 import {
   validateMinPrice,
   validateMaxPrice,
   MAX_PRICE,
-} from './price-validator.js';
+} from './validators/price-validator.js';
 
 import {
   validateTitle,
   MAX_LENGTH,
   MIN_LENGTH,
-} from './title-validator.js';
-
-
-import './time-changer.js';
+} from './validators/title-validator.js';
 
 const adForm = document.querySelector('.ad-form');
 const guestCount = adForm.querySelector('#capacity');
@@ -32,7 +29,6 @@ const pristine = new Pristine(adForm, {
   errorTextTag: 'span',
   errorTextClass: 'ad-form__error',
 });
-
 
 pristine.addValidator(
   guestCount,
@@ -58,5 +54,6 @@ pristine.addValidator(
   'Слишком низкая стоимость'
 );
 
-
-export {pristine};
+export {
+  pristine
+};

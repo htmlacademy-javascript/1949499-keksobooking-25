@@ -1,10 +1,10 @@
 import {
-  map, setAddress
-} from './map-select-address.js';
+  createOffer
+} from '../util/markup-generator.js';
 
 import {
-  createOffer
-} from '../markup-generator.js';
+  map
+} from './map-select-address.js';
 
 const pinIcon = L.icon({
   iconUrl: './img/pin.svg',
@@ -28,4 +28,12 @@ function createMarker(offer) {
     .bindPopup(point.querySelector('.popup'));
 }
 
-export {createMarker, setAddress};
+function showPopups(popups) {
+  markerGroup.clearLayers();
+  popups.forEach((popup) => createMarker(popup));
+}
+
+export {
+  showPopups,
+  map
+};

@@ -1,11 +1,12 @@
-import {activePage, unActivePage} from '../form/form-controller.js';
+import {
+  unblockAdForm
+} from '../form/form-state-controller.js';
 
 const centerOfTokyo = L.latLng(35.681729, 139.753927);
 
-unActivePage();
 const map = L.map('map-canvas')
   .on('load', () => {
-    activePage();
+    unblockAdForm();
   })
   .setView({
     lat: 35.681729,
@@ -25,11 +26,14 @@ const mainPinIcon = L.icon({
 });
 
 const mainPinMarker = L.marker(
-  centerOfTokyo,
-  {
+  centerOfTokyo, {
     draggable: true,
     icon: mainPinIcon,
   }
 ).addTo(map);
 
-export {mainPinMarker, map, centerOfTokyo};
+export {
+  mainPinMarker,
+  map,
+  centerOfTokyo,
+};
