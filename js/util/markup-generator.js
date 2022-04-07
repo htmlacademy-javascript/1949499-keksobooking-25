@@ -26,11 +26,13 @@ function checkData() {
 
 function getPhotos(photos, card) {
   const resultFragment = document.createDocumentFragment();
+
   photos.forEach((photo) => {
     const popupPhoto = card.querySelector('.popup__photo').cloneNode(true);
     popupPhoto.src = photo;
     resultFragment.appendChild(popupPhoto);
   });
+
   return resultFragment;
 }
 
@@ -54,10 +56,11 @@ function getFeatures(features, card) {
   }
 }
 
-
 function setOffer(data, template) {
   const card = template.content.cloneNode(true);
+
   card.querySelector('.popup__title').textContent = data.title;
+
   if (checkData(data.address)) {
     card.querySelector('.popup__text--address').textContent = data.address;
   } else {
@@ -83,8 +86,10 @@ function setOffer(data, template) {
   } else {
     card.querySelector('.popup__text--time').textContent = '';
   }
+
   getFeatures(data.features, card);
   card.querySelector('.popup__description').textContent = data.description;
+
   if (checkData(data.photos)) {
     card.querySelector('.popup__photos').replaceChild(getPhotos(data.photos, card), card.querySelector('.popup__photo'));
   } else {

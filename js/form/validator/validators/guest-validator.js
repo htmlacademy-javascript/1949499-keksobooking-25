@@ -1,4 +1,7 @@
-import '../../pristine/pristine.min.js';
+import '../../../../pristine/pristine.min.js';
+
+const NOT_FOR_GUESTS = 0;
+const MAX_COUNT_GUESTS = 3;
 
 const adForm = document.querySelector('.ad-form');
 const guestsCount = adForm.querySelector('#capacity');
@@ -14,8 +17,6 @@ const pristine = new Pristine(adForm, {
 });
 
 function getMaxGuests(value) {
-  const NOT_FOR_GUESTS = 0;
-  const MAX_COUNT_GUESTS = 3;
   if (value > MAX_COUNT_GUESTS) {
     return NOT_FOR_GUESTS;
   }
@@ -24,7 +25,6 @@ function getMaxGuests(value) {
 
 function validateGuests(value) {
   const max = getMaxGuests(roomsCount.value);
-  const NOT_FOR_GUESTS = 0;
   if (max === NOT_FOR_GUESTS || Number(value) === NOT_FOR_GUESTS) {
     return max === Number(value);
   }
@@ -37,13 +37,9 @@ pristine.addValidator(
   'Неверное число гостей'
 );
 
-guestsCount.addEventListener('change', () => {
-  pristine.validate();
-});
+guestsCount.addEventListener('change', () => pristine.validate());
 
-roomsCount.addEventListener('change', () => {
-  pristine.validate();
-});
+roomsCount.addEventListener('change', () => pristine.validate());
 
 export {
   validateGuests

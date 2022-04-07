@@ -1,129 +1,105 @@
-import {pristine} from './form-validator.js';
+import {
+  isEscapeKey
+} from '../util/util.js';
 
-import { isEscapeKey } from '../util.js';
+import {
+  pristine
+} from './validator/form-main-validator.js';
 
-import { setAddress } from '../server-data.js';
+import {
+  sliderElement
+} from '../slider/slider.js';
+
+import {
+  sendData
+} from '../api/api.js';
+
+import {
+  setAddress
+} from '../map/map-select-address.js';
+
+import '../util/time-changer.js';
+
+import '../map/map-filter.js';
 
 const adForm = document.querySelector('.ad-form');
+const resetButton = adForm.querySelector('.ad-form__reset');
+const submitButton = adForm.querySelector('.ad-form__submit');
 
-function unActiveBlock(form){
-  const selector = `.${form}`;
-  const parent = document.querySelector(selector);
-  const childArr = Object.values(parent.children);
-  parent.classList.add(`${form}--disabled`);
-  childArr.forEach((child) => {
-    child.classList.add('disabled');
-  });
-}
-
-function activeBlock(form){
-  const selector = `.${form}`;
-  const parent = document.querySelector(selector);
-  const childArr = Object.values(parent.children);
-  parent.classList.remove(`${form}--disabled`);
-  childArr.forEach((child) => {
-    child.classList.remove('disabled');
-  });
-}
-
-function unActivePage(){
-  unActiveBlock('ad-form');
-  unActiveBlock('map__filters');
-}
-function activePage(){
-  activeBlock('ad-form');
-  activeBlock('map__filters');
-}
-
-function closeSuccessMessage(evt){
+function closeSuccessMessage(evt) {
   const successMessage = document.querySelector('.success');
   const body = document.querySelector('body');
-  if(isEscapeKey(evt) || evt.target === successMessage){
+  if (isEscapeKey(evt) || evt.target === successMessage) {
     body.removeChild(successMessage);
     document.removeEventListener('keydown', closeSuccessMessage);
     window.removeEventListener('click', closeSuccessMessage);
   }
 }
 
-function closeErrorMessage(evt){
+function closeErrorMessage(evt) {
   const errorMessage = document.querySelector('.error');
   const messageButton = errorMessage.querySelector('.error__button');
   const body = document.querySelector('body');
-  if(isEscapeKey(evt) || evt.target === errorMessage || evt.target === messageButton){
+  if (isEscapeKey(evt) || evt.target === errorMessage || evt.target === messageButton) {
     body.removeChild(errorMessage);
     document.removeEventListener('keydown', closeErrorMessage);
     window.removeEventListener('click', closeErrorMessage);
   }
 }
 
-function openMessage(status){
+function openMessage(status) {
   const messageTemplate = document.querySelector(`#${status}`);
   const message = messageTemplate.content.cloneNode(true);
   const body = document.querySelector('body');
   body.appendChild(message);
-  if(status === 'success'){
+  if (status === 'success') {
     window.addEventListener('click', closeSuccessMessage);
     document.addEventListener('keydown', closeSuccessMessage);
-  } else{
+  } else {
     window.addEventListener('click', closeErrorMessage);
     document.addEventListener('keydown', closeErrorMessage);
   }
 }
 
-function giveFeedback(status){
-  if(status === 'success'){
+function giveFeedback(status) {
+  if (status === 'success') {
+    const priceField = document.querySelector('#price');
     adForm.reset();
     setAddress();
+    priceField.value = 5000;
+    sliderElement.noUiSlider.set(priceField.value);
   }
   openMessage(status);
+  unblockSubmitButton();
 }
-const resetButton = adForm.querySelector('.ad-form__reset');
-const submitButton = adForm.querySelector('.ad-form__submit');
 
-function blockSubmitButton(){
+function blockSubmitButton() {
   submitButton.disabled = true;
 }
 
-function unblockSubmitButton(){
+function unblockSubmitButton() {
   submitButton.disabled = false;
 }
 
-function setFormSubmit(onResult){
-
+function setFormSubmit(onResult) {
   adForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
     const isValid = pristine.validate();
     if (isValid) {
       const formData = new FormData(evt.target);
       blockSubmitButton();
-      fetch(
-        'https://25.javascript.pages.academy/keksobooking',
-        {
-          method: 'POST',
-          body: formData,
-        }
-      )
-        .then(() => {
-          onResult('success');
-          unblockSubmitButton();
-        })
-        .catch(() => {
-          onResult('error');
-          unblockSubmitButton();
-        });
+      sendData(onResult, formData);
     }
   });
 }
 
-function clearForm(){
+resetButton.addEventListener('click', (evt) => {
+  const priceField = document.querySelector('#price');
+  evt.preventDefault();
   adForm.reset();
   setAddress();
-}
-
-resetButton.addEventListener('click', (evt) => {
-  evt.preventDefault();
-  clearForm();
+  priceField.value = 5000;
+  sliderElement.noUiSlider.set(priceField.value);
 });
-setFormSubmit(giveFeedback);
 
-export {activePage, unActivePage};
+setFormSubmit(giveFeedback);

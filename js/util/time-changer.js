@@ -8,10 +8,6 @@ function changeTime(actual) {
   adForm.querySelector('#timeout').value = actual;
 }
 
-timeIn.addEventListener('change', () => {
-  changeTime(timeIn.value);
-});
+timeIn.addEventListener('change', () => changeTime(timeIn.value));
 
-timeOut.addEventListener('change', () => {
-  changeTime(timeOut.value);
-});
+timeOut.addEventListener('change', () => changeTime(timeOut.value));

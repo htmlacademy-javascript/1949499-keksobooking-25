@@ -1,9 +1,16 @@
-import '../../pristine/pristine.min.js';
+import '../../../../pristine/pristine.min.js';
+
+const BUNGALOW_PRICE = 0;
+const DEFAULT = 1000;
+const FLAT_PRICE = 1000;
+const HOTEL_PRICE = 3000;
+const HOUSE_PRICE = 5000;
+const PALACE_PRICE = 10000;
+const MAX_PRICE = 100000;
 
 const adForm = document.querySelector('.ad-form');
 const price = adForm.querySelector('#price');
 const typeAd = adForm.querySelector('#type');
-const MAX_PRICE = 100000;
 
 const pristine = new Pristine(adForm, {
   classTo: 'ad-form__element',
@@ -15,13 +22,6 @@ const pristine = new Pristine(adForm, {
 });
 
 function getMinPrice(type) {
-  const FLAT_PRICE = 1000;
-  const BUNGALOW_PRICE = 0;
-  const HOUSE_PRICE = 5000;
-  const PALACE_PRICE = 10000;
-  const HOTEL_PRICE = 3000;
-  const DEFAULT = 1000;
-
   switch (type) {
     case 'flat':
       return FLAT_PRICE;
@@ -58,14 +58,9 @@ pristine.addValidator(
   'Слишком низкая стоимость'
 );
 
-price.addEventListener('change', () => {
-  pristine.validate();
-});
+price.addEventListener('change', () => pristine.validate());
 
-typeAd.addEventListener('change', () => {
-  pristine.validate();
-});
-
+typeAd.addEventListener('change', () => pristine.validate());
 
 export {
   validateMaxPrice,
