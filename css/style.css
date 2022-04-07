@@ -1069,3 +1069,13 @@ fieldset {
   z-index: 1000;
   border-radius: 8px;
 }
+
+
+/**
+ * Ошибки валидатора
+ */
+
+ .pristine-error{
+    color: #ff5635;
+    font-weight: bold;
+ }

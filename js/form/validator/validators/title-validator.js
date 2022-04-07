@@ -16,9 +16,7 @@ const pristine = new Pristine(adForm, {
   errorTextClass: 'ad-form__error',
 });
 
-function validateTitle(value) {
-  return value.length >= MIN_LENGTH && value.length <= MAX_LENGTH;
-}
+const validateTitle = (value) => value.length >= MIN_LENGTH && value.length <= MAX_LENGTH;
 
 pristine.addValidator(
   title,

@@ -1,4 +1,4 @@
-function getType(type) {
+const getType = (type) => {
   switch (type) {
     case 'flat':
       return 'Квартира';
@@ -13,30 +13,31 @@ function getType(type) {
     default:
       return '';
   }
-}
+};
 
-function checkData() {
-  for (let i = 0; i < arguments.length; i++) {
-    if (arguments[i] === undefined) {
+const checkData = (...rest) => {
+  for (let i = 0; i < rest.length; i++) {
+    if (rest[i] === undefined) {
       return false;
     }
   }
   return true;
-}
+};
 
-function getPhotos(photos, card) {
+const getPhotos = (photos, card) => {
   const resultFragment = document.createDocumentFragment();
+  const popupPhoto = card.querySelector('.popup__photo');
 
   photos.forEach((photo) => {
-    const popupPhoto = card.querySelector('.popup__photo').cloneNode(true);
-    popupPhoto.src = photo;
-    resultFragment.appendChild(popupPhoto);
+    const inputPhoto = popupPhoto.cloneNode(true);
+    inputPhoto.src = photo;
+    resultFragment.appendChild(inputPhoto);
   });
 
   return resultFragment;
-}
+};
 
-function getFeatures(features, card) {
+const getFeatures = (features, card) => {
   const featureContainer = card.querySelector('.popup__features');
   const featureList = featureContainer.querySelectorAll('.popup__feature');
   if (checkData(features)) {
@@ -54,9 +55,9 @@ function getFeatures(features, card) {
       featureListItem.remove();
     });
   }
-}
+};
 
-function setOffer(data, template) {
+const setOffer = (data, template) => {
   const card = template.content.cloneNode(true);
 
   card.querySelector('.popup__title').textContent = data.title;
@@ -96,14 +97,14 @@ function setOffer(data, template) {
     card.querySelector('.popup__photos').innerHTML = '';
   }
   return card;
-}
+};
 
-function createOffer(data, card) {
+const createOffer = (data, card) => {
   const inputFragment = document.createDocumentFragment();
   inputFragment.appendChild(setOffer(data.offer, card));
   inputFragment.querySelector('.popup__avatar').src = data.author.avatar;
   return inputFragment;
-}
+};
 
 export {
   createOffer
