@@ -9,13 +9,16 @@ const unActivateForm = (form) => {
 };
 
 const activateForm = (form) => {
-  const selector = `.${form}`;
-  const parent = document.querySelector(selector);
-  const childArr = Object.values(parent.children);
-  parent.classList.remove(`${form}--disabled`);
-  childArr.forEach((child) => {
-    child.classList.remove('disabled');
-  });
+  const formNode = document.querySelector(`.${form}`);
+  if (formNode.children[0].classList.contains('disabled')){
+    const selector = `.${form}`;
+    const parent = document.querySelector(selector);
+    const childArr = Object.values(parent.children);
+    parent.classList.remove(`${form}--disabled`);
+    childArr.forEach((child) => {
+      child.classList.remove('disabled');
+    });
+  }
 };
 
 const blockPage = () => {
@@ -25,11 +28,14 @@ const blockPage = () => {
 
 const unblockAdForm = () => activateForm('ad-form');
 
+const blockFilterForm = () => unActivateForm('map__filters');
+
 const unblockFilterForm = () => activateForm('map__filters');
 
 blockPage();
 
 export {
   unblockAdForm,
-  unblockFilterForm
+  blockFilterForm,
+  unblockFilterForm,
 };
