@@ -1,7 +1,7 @@
 import '../../../../pristine/pristine.min.js';
 
 const BUNGALOW_PRICE = 0;
-const DEFAULT = 1000;
+const DEFAULT = 100001;
 const FLAT_PRICE = 1000;
 const HOTEL_PRICE = 3000;
 const HOUSE_PRICE = 5000;
@@ -21,7 +21,7 @@ const pristine = new Pristine(adForm, {
   errorTextClass: 'ad-form__error',
 });
 
-function getMinPrice(type) {
+const getMinPrice = (type) => {
   switch (type) {
     case 'flat':
       return FLAT_PRICE;
@@ -36,15 +36,11 @@ function getMinPrice(type) {
     default:
       return DEFAULT;
   }
-}
+};
 
-function validateMaxPrice(value) {
-  return value <= MAX_PRICE;
-}
+const validateMaxPrice = (value) => value <= MAX_PRICE;
 
-function validateMinPrice(value) {
-  return value >= getMinPrice(typeAd.value);
-}
+const validateMinPrice = (value) => value >= getMinPrice(typeAd.value);
 
 pristine.addValidator(
   price,

@@ -16,20 +16,15 @@ const pristine = new Pristine(adForm, {
   errorTextClass: 'ad-form__error',
 });
 
-function getMaxGuests(value) {
-  if (value > MAX_COUNT_GUESTS) {
-    return NOT_FOR_GUESTS;
-  }
-  return value;
-}
+const getMaxGuests = (value) => value > MAX_COUNT_GUESTS ? NOT_FOR_GUESTS : value;
 
-function validateGuests(value) {
+const validateGuests = (value) => {
   const max = getMaxGuests(roomsCount.value);
   if (max === NOT_FOR_GUESTS || Number(value) === NOT_FOR_GUESTS) {
     return max === Number(value);
   }
   return max >= value && value !== NOT_FOR_GUESTS;
-}
+};
 
 pristine.addValidator(
   guestsCount,

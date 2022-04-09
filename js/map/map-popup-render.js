@@ -6,6 +6,8 @@ import {
   map
 } from './map-select-address.js';
 
+const cardTemplate = document.querySelector('#card');
+
 const pinIcon = L.icon({
   iconUrl: './img/pin.svg',
   iconSize: [40, 40],
@@ -14,8 +16,7 @@ const pinIcon = L.icon({
 
 const markerGroup = L.layerGroup().addTo(map);
 
-function createMarker(offer) {
-  const cardTemplate = document.querySelector('#card');
+const createMarker = (offer) => {
   const point = createOffer(offer, cardTemplate);
   const marker = L.marker({
     lat: offer.location.lat,
@@ -26,14 +27,14 @@ function createMarker(offer) {
   marker
     .addTo(markerGroup)
     .bindPopup(point.querySelector('.popup'));
-}
+};
 
-function showPopups(popups) {
+const showPopups = (popups) => {
   markerGroup.clearLayers();
   popups.forEach((popup) => createMarker(popup));
-}
+};
 
 export {
   showPopups,
-  map
+  map,
 };

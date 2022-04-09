@@ -1,11 +1,11 @@
-function getData(onSuccess, onError) {
+const getData = (onSuccess, onError) => {
   fetch('https://25.javascript.pages.academy/keksobooking/data')
     .then((response) => response.json())
     .then((data) => onSuccess(data))
     .catch(onError);
-}
+};
 
-function sendData(onResult, body) {
+const sendData = (onResult, body) => {
   fetch(
     'https://25.javascript.pages.academy/keksobooking', {
       method: 'POST',
@@ -13,7 +13,7 @@ function sendData(onResult, body) {
     }, )
     .then(() => onResult('success'))
     .catch(() => onResult('error'));
-}
+};
 
 export {
   getData,

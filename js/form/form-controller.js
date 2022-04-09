@@ -19,69 +19,95 @@ import {
 } from '../map/map-select-address.js';
 
 import '../util/time-changer.js';
-
 import '../map/map-filter.js';
+import './images/avatar-loader.js';
+import './images/photo-loader.js';
 
+
+const body = document.querySelector('body');
 const adForm = document.querySelector('.ad-form');
+const priceField = document.querySelector('#price');
 const resetButton = adForm.querySelector('.ad-form__reset');
 const submitButton = adForm.querySelector('.ad-form__submit');
+const preview = document.querySelector('.ad-form-header__preview').querySelector('img');
+const photo = document.querySelector('.ad-form__photo').querySelector('img');
 
-function closeSuccessMessage(evt) {
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+};
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+};
+
+const successMessageClickHandler = () => {
   const successMessage = document.querySelector('.success');
-  const body = document.querySelector('body');
-  if (isEscapeKey(evt) || evt.target === successMessage) {
+  body.removeChild(successMessage);
+  document.removeEventListener('keydown', successMessageKeydownHandler);
+  window.removeEventListener('click', successMessageClickHandler);
+};
+
+function successMessageKeydownHandler(evt) {
+  if (isEscapeKey(evt)) {
+    const successMessage = document.querySelector('.success');
     body.removeChild(successMessage);
-    document.removeEventListener('keydown', closeSuccessMessage);
-    window.removeEventListener('click', closeSuccessMessage);
+    document.removeEventListener('keydown', successMessageKeydownHandler);
+    window.removeEventListener('click', successMessageClickHandler);
   }
 }
 
-function closeErrorMessage(evt) {
+const errorMessageClickHandler = () => {
   const errorMessage = document.querySelector('.error');
-  const messageButton = errorMessage.querySelector('.error__button');
-  const body = document.querySelector('body');
-  if (isEscapeKey(evt) || evt.target === errorMessage || evt.target === messageButton) {
+  body.removeChild(errorMessage);
+  document.removeEventListener('keydown', errorMessageKeydownHandler);
+  window.removeEventListener('click', errorMessageClickHandler);
+};
+
+function errorMessageKeydownHandler(evt) {
+  const errorMessage = document.querySelector('.error');
+  if (isEscapeKey(evt)) {
     body.removeChild(errorMessage);
-    document.removeEventListener('keydown', closeErrorMessage);
-    window.removeEventListener('click', closeErrorMessage);
+    document.removeEventListener('keydown', errorMessageKeydownHandler);
+    window.removeEventListener('click', errorMessageClickHandler);
   }
 }
 
-function openMessage(status) {
+const openMessageHandler = (status) => {
   const messageTemplate = document.querySelector(`#${status}`);
   const message = messageTemplate.content.cloneNode(true);
-  const body = document.querySelector('body');
   body.appendChild(message);
   if (status === 'success') {
-    window.addEventListener('click', closeSuccessMessage);
-    document.addEventListener('keydown', closeSuccessMessage);
+    window.addEventListener('click', successMessageClickHandler);
+    document.addEventListener('keydown', successMessageKeydownHandler);
   } else {
-    window.addEventListener('click', closeErrorMessage);
-    document.addEventListener('keydown', closeErrorMessage);
+    window.addEventListener('click', errorMessageClickHandler);
+    document.addEventListener('keydown', errorMessageKeydownHandler);
   }
-}
+};
 
-function giveFeedback(status) {
+const resetPrice = () => {
+  priceField.value = 5000;
+  sliderElement.noUiSlider.set(priceField.value);
+};
+
+const clearPhotos = () => {
+  preview.src = 'img/muffin-grey.svg';
+  photo.src = '';
+};
+
+const giveFeedback = (status) => {
   if (status === 'success') {
-    const priceField = document.querySelector('#price');
     adForm.reset();
     setAddress();
-    priceField.value = 5000;
-    sliderElement.noUiSlider.set(priceField.value);
+    resetPrice();
+    clearPhotos();
   }
-  openMessage(status);
+  openMessageHandler(status);
   unblockSubmitButton();
-}
+};
 
-function blockSubmitButton() {
-  submitButton.disabled = true;
-}
 
-function unblockSubmitButton() {
-  submitButton.disabled = false;
-}
-
-function setFormSubmit(onResult) {
+const setFormSubmit = (onResult) => {
   adForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
     const isValid = pristine.validate();
@@ -91,15 +117,15 @@ function setFormSubmit(onResult) {
       sendData(onResult, formData);
     }
   });
-}
+};
+
 
 resetButton.addEventListener('click', (evt) => {
-  const priceField = document.querySelector('#price');
   evt.preventDefault();
   adForm.reset();
   setAddress();
-  priceField.value = 5000;
-  sliderElement.noUiSlider.set(priceField.value);
+  resetPrice();
+  clearPhotos();
 });
 
 setFormSubmit(giveFeedback);

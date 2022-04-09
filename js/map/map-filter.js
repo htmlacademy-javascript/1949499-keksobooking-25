@@ -3,7 +3,8 @@ import {
 } from '../api/api.js';
 
 import {
-  unblockFilterForm
+  unblockFilterForm,
+  blockFilterForm,
 } from '../form/form-state-controller.js';
 
 import {
@@ -21,30 +22,14 @@ const HIGH_PRICE = 50000;
 const body = document.querySelector('body');
 const errorMessageTemplate = body.querySelector('#data-error').content.cloneNode(true);
 const filterForm = document.querySelector('.map__filters');
+const priceField = filterForm.querySelector('#housing-price');
+const typeField = filterForm.querySelector('#housing-type');
+const roomsField = filterForm.querySelector('#housing-rooms');
+const guestsField = filterForm.querySelector('#housing-guests');
+const featureCheckboxes = filterForm.querySelectorAll('input[type=checkbox]');
 
-const filterInputs = filterForm.querySelectorAll('.map__filter');
-const features = filterForm.querySelectorAll('input[type=checkbox]');
-
-
-function onLoadError() {
-  features.forEach((feature) => feature.removeEventListener('change', addHandler));
-  filterInputs.forEach((input) => input.removeEventListener('change', addHandler));
-
-  body.appendChild(errorMessageTemplate);
-  const errorMessage = body.querySelector('.data-error');
-  setTimeout(() => {
-    body.removeChild(errorMessage);
-  }, 5000);
-}
-
-function showOffers(data) {
-  unblockFilterForm();
-  const offers = filterData(data).slice(0, MAX_OFFERS);
-  showPopups(offers);
-}
-
-function filterPrice(data) {
-  const priceInput = filterForm.querySelector('#housing-price').value;
+const filterPrice = (data) => {
+  const priceInput = priceField.value;
 
   switch (priceInput) {
     case 'middle':
@@ -56,10 +41,9 @@ function filterPrice(data) {
     default:
       return true;
   }
-}
+};
 
-function getFeatures() {
-  const featureCheckboxes = filterForm.querySelectorAll('input[type=checkbox]');
+const getFeatures = () => {
   const checkedFeatures = [];
   featureCheckboxes.forEach((checkbox) => {
     if (checkbox.checked) {
@@ -67,13 +51,22 @@ function getFeatures() {
     }
   });
   return checkedFeatures;
-}
+};
 
-function filterData(data) {
-  const typeInput = filterForm.querySelector('#housing-type').value;
-  const priceInput = filterForm.querySelector('#housing-price').value;
-  const roomsInput = filterForm.querySelector('#housing-rooms').value;
-  const guestsInput = filterForm.querySelector('#housing-guests').value;
+const filterFeatures = (dataFeatures, inputFeatures) => {
+  for (let i = 0; i < inputFeatures.length - 1; i++) {
+    if (dataFeatures.indexOf(inputFeatures[i]) === -1) {
+      return false;
+    }
+  }
+  return true;
+};
+
+const filterData = (data) => {
+  const typeInput = typeField.value;
+  const priceInput = priceField.value;
+  const roomsInput = roomsField.value;
+  const guestsInput = guestsField.value;
   const featuresInput = getFeatures();
 
   let filteredData = Array.from(data);
@@ -103,25 +96,30 @@ function filterData(data) {
     });
   }
   return filteredData;
-}
+};
 
-function filterFeatures(dataFeatures, inputFeatures) {
-  for (let i = 0; i < inputFeatures.length - 1; i++) {
-    if (dataFeatures.indexOf(inputFeatures[i]) === -1) {
-      return false;
-    }
-  }
-  return true;
-}
+const showOffers = (data) => {
+  unblockFilterForm();
+  const offers = filterData(data).slice(0, MAX_OFFERS);
+  showPopups(offers);
+};
+
+const showError = () => {
+  filterForm.removeEventListener('change', addChangeHandler);
+  blockFilterForm();
+  body.appendChild(errorMessageTemplate);
+  const errorMessage = body.querySelector('.data-error');
+  setTimeout(() => {
+    body.removeChild(errorMessage);
+  }, 5000);
+};
 
 const getDataDebounced = debounce(getData, 500);
 
-function addHandler() {
-  getDataDebounced(showOffers, onLoadError);
+function addChangeHandler() {
+  getDataDebounced(showOffers, showError);
 }
 
-features.forEach((feature) => feature.addEventListener('change', addHandler));
+filterForm.addEventListener('change', addChangeHandler);
 
-filterInputs.forEach((input) => input.addEventListener('change', addHandler));
-
-addHandler();
+getData(showOffers, showError);

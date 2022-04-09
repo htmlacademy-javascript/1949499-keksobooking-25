@@ -1,6 +1,4 @@
-function isEscapeKey(evt) {
-  return evt.key === 'Escape';
-}
+const isEscapeKey = (evt) => evt.key === 'Escape';
 
 function debounce(cb, delay = 500) {
   let timer;

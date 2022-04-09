@@ -6,11 +6,9 @@ import {
   MAX_PRICE,
 } from '../form/validator/validators/price-validator.js';
 
-const sliderElement = document.querySelector('.ad-form__slider');
-const priceField = document.querySelector('#price');
-
 const adForm = document.querySelector('.ad-form');
-const price = adForm.querySelector('#price');
+const sliderElement = adForm.querySelector('.ad-form__slider');
+const priceField = adForm.querySelector('#price');
 
 const pristine = new Pristine(adForm, {
   classTo: 'ad-form__element',
@@ -22,13 +20,13 @@ const pristine = new Pristine(adForm, {
 });
 
 pristine.addValidator(
-  price,
+  priceField,
   validateMaxPrice,
   `Максимальное значение ${MAX_PRICE}`
 );
 
 pristine.addValidator(
-  price,
+  priceField,
   validateMinPrice,
   'Слишком низкая стоимость'
 );
@@ -48,9 +46,7 @@ sliderElement.noUiSlider.on('update', () => {
   pristine.validate();
 });
 
-priceField.addEventListener('change', () => {
-  sliderElement.noUiSlider.set(priceField.value);
-});
+priceField.addEventListener('change', () => sliderElement.noUiSlider.set(priceField.value));
 
 export {
   sliderElement
