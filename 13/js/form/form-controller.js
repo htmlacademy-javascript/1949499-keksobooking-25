@@ -29,6 +29,8 @@ const adForm = document.querySelector('.ad-form');
 const priceField = document.querySelector('#price');
 const resetButton = adForm.querySelector('.ad-form__reset');
 const submitButton = adForm.querySelector('.ad-form__submit');
+const preview = document.querySelector('.ad-form-header__preview').querySelector('img');
+const photo = document.querySelector('.ad-form__photo').querySelector('img');
 
 const blockSubmitButton = () => {
   submitButton.disabled = true;
@@ -38,44 +40,67 @@ const unblockSubmitButton = () => {
   submitButton.disabled = false;
 };
 
-const successMessageCloseHandler = (evt) => {
+const successMessageClickHandler = () => {
   const successMessage = document.querySelector('.success');
-  if (isEscapeKey(evt) || evt.target === successMessage) {
-    body.removeChild(successMessage);
-    document.removeEventListener('keydown', successMessageCloseHandler);
-    window.removeEventListener('click', successMessageCloseHandler);
-  }
+  body.removeChild(successMessage);
+  document.removeEventListener('keydown', successMessageKeydownHandler);
+  window.removeEventListener('click', successMessageClickHandler);
 };
 
-const errorMessageCloseHandler = (evt) => {
-  const errorMessage = document.querySelector('.error');
-  const messageButton = errorMessage.querySelector('.error__button');
-  if (isEscapeKey(evt) || evt.target === errorMessage || evt.target === messageButton) {
-    body.removeChild(errorMessage);
-    document.removeEventListener('keydown', errorMessageCloseHandler);
-    window.removeEventListener('click', errorMessageCloseHandler);
+function successMessageKeydownHandler(evt) {
+  if (isEscapeKey(evt)) {
+    const successMessage = document.querySelector('.success');
+    body.removeChild(successMessage);
+    document.removeEventListener('keydown', successMessageKeydownHandler);
+    window.removeEventListener('click', successMessageClickHandler);
   }
+}
+
+const errorMessageClickHandler = () => {
+  const errorMessage = document.querySelector('.error');
+  body.removeChild(errorMessage);
+  document.removeEventListener('keydown', errorMessageKeydownHandler);
+  window.removeEventListener('click', errorMessageClickHandler);
 };
+
+function errorMessageKeydownHandler(evt) {
+  const errorMessage = document.querySelector('.error');
+  if (isEscapeKey(evt)) {
+    body.removeChild(errorMessage);
+    document.removeEventListener('keydown', errorMessageKeydownHandler);
+    window.removeEventListener('click', errorMessageClickHandler);
+  }
+}
 
 const openMessageHandler = (status) => {
   const messageTemplate = document.querySelector(`#${status}`);
   const message = messageTemplate.content.cloneNode(true);
   body.appendChild(message);
   if (status === 'success') {
-    window.addEventListener('click', successMessageCloseHandler);
-    document.addEventListener('keydown', successMessageCloseHandler);
+    window.addEventListener('click', successMessageClickHandler);
+    document.addEventListener('keydown', successMessageKeydownHandler);
   } else {
-    window.addEventListener('click', errorMessageCloseHandler);
-    document.addEventListener('keydown', errorMessageCloseHandler);
+    window.addEventListener('click', errorMessageClickHandler);
+    document.addEventListener('keydown', errorMessageKeydownHandler);
   }
+};
+
+const resetPrice = () => {
+  priceField.value = 5000;
+  sliderElement.noUiSlider.set(priceField.value);
+};
+
+const clearPhotos = () => {
+  preview.src = 'img/muffin-grey.svg';
+  photo.src = '';
 };
 
 const giveFeedback = (status) => {
   if (status === 'success') {
     adForm.reset();
     setAddress();
-    priceField.value = 5000;
-    sliderElement.noUiSlider.set(priceField.value);
+    resetPrice();
+    clearPhotos();
   }
   openMessageHandler(status);
   unblockSubmitButton();
@@ -99,8 +124,8 @@ resetButton.addEventListener('click', (evt) => {
   evt.preventDefault();
   adForm.reset();
   setAddress();
-  priceField.value = 5000;
-  sliderElement.noUiSlider.set(priceField.value);
+  resetPrice();
+  clearPhotos();
 });
 
 setFormSubmit(giveFeedback);

@@ -3,7 +3,8 @@ import {
 } from '../api/api.js';
 
 import {
-  unblockFilterForm
+  unblockFilterForm,
+  blockFilterForm,
 } from '../form/form-state-controller.js';
 
 import {
@@ -105,7 +106,7 @@ const showOffers = (data) => {
 
 const showError = () => {
   filterForm.removeEventListener('change', addChangeHandler);
-
+  blockFilterForm();
   body.appendChild(errorMessageTemplate);
   const errorMessage = body.querySelector('.data-error');
   setTimeout(() => {
