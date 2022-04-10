@@ -31,6 +31,7 @@ const resetButton = adForm.querySelector('.ad-form__reset');
 const submitButton = adForm.querySelector('.ad-form__submit');
 const preview = document.querySelector('.ad-form-header__preview').querySelector('img');
 const photo = document.querySelector('.ad-form__photo').querySelector('img');
+const pristineError = document.querySelector('.ad-form__error');
 
 const blockSubmitButton = () => {
   submitButton.disabled = true;
@@ -129,3 +130,4 @@ resetButton.addEventListener('click', (evt) => {
 });
 
 setFormSubmit(giveFeedback);
+pristineError.parentNode.removeChild(pristineError);

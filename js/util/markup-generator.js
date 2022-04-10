@@ -1,4 +1,4 @@
-const getType = (type) => {
+const getHousingType = (type) => {
   switch (type) {
     case 'flat':
       return 'Квартира';
@@ -74,7 +74,7 @@ const setOffer = (data, template) => {
     card.querySelector('.popup__text--price').innerHTML = '';
   }
 
-  card.querySelector('.popup__type').textContent = getType(data.type);
+  card.querySelector('.popup__type').textContent = getHousingType(data.type);
 
   if (checkData(data.rooms, data.guests)) {
     card.querySelector('.popup__text--capacity').textContent = `${data.rooms } комнаты для ${ data.guests } гостей`;
