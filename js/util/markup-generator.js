@@ -15,9 +15,9 @@ const getHousingType = (type) => {
   }
 };
 
-const checkData = (...rest) => {
-  for (let i = 0; i < rest.length; i++) {
-    if (rest[i] === undefined) {
+const checkData = (...parameters) => {
+  for (let i = 0; i < parameters.length; i++) {
+    if (parameters[i] === undefined) {
       return false;
     }
   }

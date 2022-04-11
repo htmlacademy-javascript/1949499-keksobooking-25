@@ -2,7 +2,7 @@ import {
   unblockAdForm
 } from '../form/form-state-controller.js';
 
-const centerOfTokyo = L.latLng(35.681729, 139.753927);
+const cityCenter = L.latLng(35.681729, 139.753927);
 
 const map = L.map('map-canvas')
   .on('load', () => {
@@ -26,7 +26,7 @@ const mainPinIcon = L.icon({
 });
 
 const mainPinMarker = L.marker(
-  centerOfTokyo, {
+  cityCenter, {
     draggable: true,
     icon: mainPinIcon,
   }
@@ -35,5 +35,5 @@ const mainPinMarker = L.marker(
 export {
   mainPinMarker,
   map,
-  centerOfTokyo,
+  cityCenter,
 };
