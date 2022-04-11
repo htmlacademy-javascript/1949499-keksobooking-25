@@ -1,5 +1,5 @@
 import {
-  centerOfTokyo,
+  cityCenter,
   mainPinMarker,
   map,
 } from './map-render.js';
@@ -8,7 +8,7 @@ const adForm = document.querySelector('.ad-form');
 const address = adForm.querySelector('#address');
 
 const setAddress = () => {
-  mainPinMarker.setLatLng(centerOfTokyo);
+  mainPinMarker.setLatLng(cityCenter);
   const {
     lat,
     lng
@@ -22,7 +22,7 @@ mainPinMarker.on('moveend', (evt) => {
     lat,
     lng
   } = evt.target.getLatLng();
-  address.value = `${lat}, ${lng}`;
+  address.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
 });
 
 setAddress();
